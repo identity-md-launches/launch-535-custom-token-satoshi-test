@@ -1,0 +1,23 @@
+{
+  "kind": "custom_token",
+  "token": {
+    "contract": "SatoshiTest",
+    "name": "Satoshi Test",
+    "symbol": "SATS",
+    "decimals": 18,
+    "constructorArgs": [],
+    "totalSupply": "21000000000000000000000000"
+  },
+  "contracts": [],
+  "pool": {
+    "pairedCurrency": "0x0000000000000000000000000000000000000000",
+    "fee": 3000,
+    "tickSpacing": 60,
+    "initialPrice": "162369416112222498834129040449637"
+  },
+  "economics": {
+    "poolBps": 9000,
+    "initialMarketCapWei": "5000000000000000000"
+  },
+  "notes": "Satoshi Test (SATS) is a plain fixed-supply ERC-20 at src/SatoshiTest.sol (contract SatoshiTest, OpenZeppelin Contracts v5.7.0 ERC20 vendored under lib/, solc 0.8.26, optimizer 200 runs, evm_version paris, bytecode_hash none). The constructor takes no arguments and mints the whole supply of 21,000,000 SATS with 18 decimals, 21000000000000000000000000 minor units, once to msg.sender. In the launch msg.sender is the ProjectFactory, which deploys the token through CREATE2 and holds the entire supply at construction; token.totalSupply above is exactly that amount. There is no owner, minter, pauser, blacklist, fee, burn, hook, receive or fallback: after construction the contract exposes only the ERC-20 interface plus the constant INITIAL_SUPPLY, so the supply can never grow and no privileged call can move or freeze a holder's balance. Every transfer moves exactly the amount asked for, so the factory's transfer of the swarm's share to the MerkleDistributor, the distributor's claim transfers, the single-sided seed through the Uniswap v4 PoolManager and later buys and sells all move whole amounts; the token needs no $factory, $poolManager or $launchNumber exemptions and takes none. No application contracts are deployed and there are no initialization calls. Pool: paired with native ETH (the zero address), fee 3000 (0.30%), tickSpacing 60. initialPrice is provenance only: it is sqrt(21000000e18 / 5e18) * 2^96, the token-per-ETH price implied by economics.initialMarketCapWei (5 ETH) over the full supply with ETH as currency0 and SATS as currency1; the deployer derives the opening price from economics.initialMarketCapWei and token.totalSupply. economics is the requester's and is copied verbatim: 9000 bps of the supply seed the pool at a 5 ETH opening market cap. The swarm's 1000 bps are taken by the factory and are not written here. script/Deploy.s.sol is a standalone operator helper that reads only EXPECTED_CHAIN_ID (31337 or 11155111); it is not used by the factory launch."
+}
